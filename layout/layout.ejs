@@ -31,8 +31,9 @@ if (page.indent != null) {
   indent = article_type === 'story'
 }
 
+var nangua_ui = theme.nangua_ui || {}
 var site_background = ''
-if (theme.style.site && theme.style.site['background-image']) {
+if ((theme.style.site && theme.style.site['background-image']) || nangua_ui.site_background?.enabled) {
   site_background += `<div class="sitebg">`
   site_background += `<div class="siteblur"></div>`
   site_background += `</div>`
