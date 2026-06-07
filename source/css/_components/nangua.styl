@@ -1,6 +1,12 @@
 // Nangua custom UI layer.
 :root
   --nangua-post-cover-width: 220px
+  --nangua-sticker-bg: rgba(255, 253, 244, 0.72)
+  --nangua-sticker-bg-strong: rgba(255, 253, 244, 0.84)
+  --nangua-sticker-border: rgba(132, 204, 151, 0.42)
+  --nangua-sticker-shadow: 0 18px 46px -30px rgba(34, 197, 94, 0.58), 0 8px 24px -22px rgba(15, 23, 42, 0.28)
+  --nangua-sticker-radius: 30px
+  --nangua-soft-line: rgba(132, 204, 151, 0.26)
   if hexo-config('nangua_ui.post_list.cover_width')
     --nangua-post-cover-width: convert(hexo-config('nangua_ui.post_list.cover_width'))
 
@@ -35,19 +41,18 @@ if hexo-config('nangua_ui.leftbar_card.mode') == 'solid'
       --inset: 0
       background-image: none !important
       filter: none
-      if hexo-config('nangua_ui.leftbar_card.color_light')
-        background-color: convert(hexo-config('nangua_ui.leftbar_card.color_light'))
-      else
-        background-color: var(--card)
+      background-color: var(--nangua-sticker-bg)
+      border: 1px solid var(--nangua-sticker-border)
+      box-shadow: var(--nangua-sticker-shadow)
+      backdrop-filter: saturate(135%) blur(14px)
+      -webkit-backdrop-filter: saturate(135%) blur(14px)
       @media screen and (prefers-color-scheme: dark)
-        if hexo-config('nangua_ui.leftbar_card.color_dark')
-          background-color: convert(hexo-config('nangua_ui.leftbar_card.color_dark'))
-        else
-          background-color: var(--card)
+        background-color: rgba(20, 31, 28, 0.78)
     .leftbar-container
       background: transparent
-      border: 1px solid var(--block-border)
-      box-shadow: 0 10px 30px -22px rgba(15, 23, 42, 0.35)
+      border: 0
+      box-shadow: none
+      border-radius: var(--nangua-sticker-radius)
       &:before
         display: none
       &:after
@@ -55,6 +60,102 @@ if hexo-config('nangua_ui.leftbar_card.mode') == 'solid'
       >.widgets
         mask: none
         -webkit-mask: none
+
+.l_left
+  border-radius: var(--nangua-sticker-radius)
+
+.l_right
+  border-radius: var(--nangua-sticker-radius)
+  .widgets:not(:empty)
+    padding: 1rem .75rem
+    border: 1px solid var(--nangua-sticker-border)
+    border-radius: var(--nangua-sticker-radius)
+    background: var(--nangua-sticker-bg)
+    box-shadow: var(--nangua-sticker-shadow)
+    backdrop-filter: saturate(135%) blur(14px)
+    -webkit-backdrop-filter: saturate(135%) blur(14px)
+    @media screen and (prefers-color-scheme: dark)
+      background: rgba(20, 31, 28, 0.78)
+  .widget-wrapper
+    padding-bottom: 1.25rem
+    &+.widget-wrapper
+      padding-top: 1rem
+      border-top: 1px solid var(--nangua-soft-line)
+    .widget-header
+      padding-left: .5rem
+      padding-right: .5rem
+      color: var(--text-p2)
+      .name
+        letter-spacing: 0
+        font-weight: 500
+        opacity: .72
+
+.l_right .widgets .widget-wrapper.toc
+  background: transparent !important
+  padding: 0
+  .widget-body
+    &:before
+      width: 2px
+      left: 6px
+      background: linear-gradient(to bottom, transparent, var(--nangua-soft-line), transparent)
+  .toc
+    --fsp: $fsp2
+    a
+      margin: 2px 0 2px .5rem
+      padding-top: 6px
+      padding-bottom: 6px
+      color: var(--text-p3)
+      border-radius: 14px !important
+      &:hover
+        background: rgba(132, 204, 151, 0.14) !important
+        color: var(--text-p1) !important
+      &.active
+        color: var(--text) !important
+        background: rgba(132, 204, 151, 0.18) !important
+        &:before
+          left: -5px
+          width: 3px
+          background: rgba(34, 197, 94, 0.72) !important
+          border-radius: 999px
+  .widget-footer
+    &:before
+      background: var(--nangua-soft-line)
+    a:hover
+      background: rgba(132, 204, 151, 0.14)
+
+.l_body.content article.content
+  margin: 1rem 0 0
+  padding: 1.75rem 2rem
+  border: 1px solid rgba(255, 255, 255, 0.72)
+  border-radius: var(--nangua-sticker-radius)
+  background: rgba(255, 255, 255, 0.78)
+  box-shadow: 0 20px 52px -38px rgba(15, 23, 42, 0.35)
+  backdrop-filter: saturate(125%) blur(10px)
+  -webkit-backdrop-filter: saturate(125%) blur(10px)
+  line-height: 1.82
+  @media screen and (prefers-color-scheme: dark)
+    background: rgba(17, 24, 39, 0.76)
+    border-color: rgba(255, 255, 255, 0.08)
+  @media screen and (max-width: $device-mobile-max)
+    margin: .75rem 1rem 0
+    padding: 1.25rem
+    border-radius: 24px
+  p:not([class])
+    line-height: 1.9
+    margin-top: 1em
+    margin-bottom: 1em
+  h1,h2,h3,h4
+    line-height: 1.45
+  img
+    border-radius: $border-image
+
+.post-list.post
+  .post-card.post
+    background: var(--nangua-sticker-bg-strong)
+    border: 1px solid rgba(255, 255, 255, 0.68)
+    box-shadow: 0 18px 44px -36px rgba(15, 23, 42, 0.42)
+    backdrop-filter: saturate(120%) blur(8px)
+    -webkit-backdrop-filter: saturate(120%) blur(8px)
 
 if hexo-config('nangua_ui.post_list.cover_position') == 'left'
   @media screen and (min-width: $device-mobile-max)
