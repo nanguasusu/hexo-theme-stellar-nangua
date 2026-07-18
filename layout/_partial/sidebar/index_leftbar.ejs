@@ -111,7 +111,7 @@ function layoutWidgets() {
   return el;
 }
 function layoutFooterDiv() {
-  const { social } = theme.footer
+  const { social, sidebar_copyright } = theme.footer
   if (social == null) {
     return ''
   }
@@ -141,6 +141,10 @@ function layoutFooterDiv() {
     }
   }
   el += '</div>';
+  if (sidebar_copyright) {
+    const copyright = sidebar_copyright.replace('{year}', new Date().getFullYear())
+    el += '<div class="sidebar-copyright">' + copyright + '</div>';
+  }
   el += '</footer>';
   return el;
 }

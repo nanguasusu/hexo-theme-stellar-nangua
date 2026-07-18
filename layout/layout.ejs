@@ -47,6 +47,9 @@ if (theme.style.prefers_theme === 'auto') {
 }
   html += partial('_partial/head')
   html += `<body>`
+    if (nangua_ui.focus_mode?.enabled) {
+      html += `<script>(function(){try{if(sessionStorage.getItem('Nangua.focusMode')==='true'){document.documentElement.setAttribute('data-focus-mode','true')}}catch(e){}})();</script>`
+    }
     html += site_background
     html += `<div id="l_cover">${partial('_partial/cover/index').trim()}</div>`
     html += `<div class="l_body ${page_type}" id="start" layout="${page.layout}" type="${article_type}" ${indent ? 'text-indent' : ''}>`

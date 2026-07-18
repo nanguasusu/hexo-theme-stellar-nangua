@@ -330,6 +330,8 @@ comments:
 
 ######## Footer ########
 footer:
+  # 左侧栏底部版权文字，支持 {year} 动态年份
+  sidebar_copyright:
   social:
     # github:
     #   icon: '<img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"/>'

@@ -1,4 +1,12 @@
 <div class='float-panel'>
+  <% if (page.layout === 'post' && theme.nangua_ui?.focus_mode?.enabled) { %>
+  <button type='button' class='focus-mode-toggle' onclick='sidebar.focusMode()' aria-pressed='false' aria-label='进入沉浸模式' title='进入沉浸模式'>
+    <svg class='focus-mode-icon' aria-hidden='true' viewBox='0 0 24 24' fill='currentColor'>
+      <path class='focus-mode-enter-path' d='M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14h2v3h3v2H5v-5Zm12 0h2v5h-5v-2h3v-3Z'/>
+      <path class='focus-mode-exit-path' d='M8 5h2v5H5V8h3V5Zm6 0h2v3h3v2h-5V5ZM5 14h5v5H8v-3H5v-2Zm9 0h5v2h-3v3h-2v-5Z'/>
+    </svg>
+  </button>
+  <% } %>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <%- icon('default:rightbar') %>
   </button>

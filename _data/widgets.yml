@@ -3,6 +3,10 @@
 # - markdown: 渲染 md 文本
 #
 
+# 右侧手账栏。文章数、标签数和本月更新数会在构建时自动统计。
+nangua_desk:
+  layout: nangua_desk
+
 ghrepo:
   layout: ghrepo
 related:

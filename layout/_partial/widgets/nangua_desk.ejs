@@ -1,0 +1,57 @@
+<%
+const now = new Date()
+const year = now.getFullYear()
+const month = now.getMonth()
+const posts = site.posts ? site.posts.filter(post => post && post.title) : []
+const tags = site.tags ? site.tags.length : 0
+const monthlyPosts = posts.filter(post => {
+  const date = new Date(post.date)
+  return date.getFullYear() === year && date.getMonth() === month
+}).length
+
+function deskIcon(name) {
+  const paths = {
+    sun: '<circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/>',
+    calendar: '<rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M8 3v5M16 3v5M4 10h16"/>',
+    clock: '<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>',
+    article: '<rect x="5" y="4" width="14" height="16" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/>',
+    tag: '<path d="M4 6.5V4h2.5L19 16.5 16.5 19 4 6.5Z"/><circle cx="7.5" cy="7.5" r="1"/>',
+    update: '<rect x="5" y="6" width="14" height="14" rx="2"/><path d="M8 3v5M16 3v5M5 10h14M9 14h6"/>'
+  }
+  return `<svg class="desk-icon desk-icon-${name}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</svg>`
+}
+%>
+<widget class="widget-wrapper nangua-desk" data-nangua-desk>
+  <section class="nangua-desk-card nangua-calendar" aria-label="日期和时间">
+    <svg class="nangua-sprig nangua-sprig-left" aria-hidden="true" viewBox="0 0 72 34"><path d="M5 28C20 25 34 17 48 5"/><ellipse cx="16" cy="23" rx="6" ry="3" transform="rotate(20 16 23)"/><ellipse cx="27" cy="18" rx="6" ry="3" transform="rotate(-28 27 18)"/><ellipse cx="38" cy="11" rx="6" ry="3" transform="rotate(18 38 11)"/></svg>
+    <svg class="nangua-sprig nangua-sprig-right" aria-hidden="true" viewBox="0 0 72 34"><path d="M5 28C20 25 34 17 48 5"/><ellipse cx="16" cy="23" rx="6" ry="3" transform="rotate(20 16 23)"/><ellipse cx="27" cy="18" rx="6" ry="3" transform="rotate(-28 27 18)"/><ellipse cx="38" cy="11" rx="6" ry="3" transform="rotate(18 38 11)"/></svg>
+    <time class="nangua-year" data-desk-year-label></time>
+    <time class="nangua-date" data-desk-date></time>
+    <div class="nangua-weekday" data-desk-weekday></div>
+    <div class="nangua-dotted-line"></div>
+    <time class="nangua-time" data-desk-time></time>
+  </section>
+
+  <section class="nangua-desk-card nangua-countdown" aria-label="时间剩余">
+    <header class="nangua-desk-title">
+      <span class="nangua-title-mark">❧</span><span>时间剩余</span><span class="nangua-title-stars">✦　*</span>
+    </header>
+    <div class="nangua-desk-rows">
+      <div class="nangua-desk-row"><span class="nangua-row-label"><%- deskIcon('sun') %>今天剩余</span><strong data-desk-today>--:--:--</strong></div>
+      <div class="nangua-desk-row"><span class="nangua-row-label"><%- deskIcon('calendar') %>本月剩余</span><strong data-desk-month>-- 天 -- 时</strong></div>
+      <div class="nangua-desk-row"><span class="nangua-row-label"><%- deskIcon('clock') %>今年剩余</span><strong data-desk-year>-- 天 -- 时</strong></div>
+    </div>
+  </section>
+
+  <section class="nangua-desk-card nangua-stats" aria-label="站点统计">
+    <header class="nangua-desk-title">
+      <span class="nangua-title-mark">❧</span><span>站点小记</span><span class="nangua-more">•••</span>
+    </header>
+    <div class="nangua-desk-rows">
+      <a class="nangua-desk-row" href="<%= pretty_url('/archives/') %>"><span class="nangua-row-label"><%- deskIcon('article') %>文章</span><strong><%= posts.length %></strong></a>
+      <a class="nangua-desk-row" href="<%= pretty_url('/tags/') %>"><span class="nangua-row-label"><%- deskIcon('tag') %>标签</span><strong><%= tags %></strong></a>
+      <div class="nangua-desk-row"><span class="nangua-row-label"><%- deskIcon('update') %>本月更新</span><strong><%= monthlyPosts %><small> 篇</small></strong></div>
+    </div>
+    <p class="nangua-desk-note">“记录学习，沉淀思考” <span>✦</span></p>
+  </section>
+</widget>

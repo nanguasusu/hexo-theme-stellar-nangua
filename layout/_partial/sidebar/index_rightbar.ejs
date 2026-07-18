@@ -63,6 +63,7 @@ function layoutWidgets() {
     return ''
   }
   var el = ''
+  var hasNanguaDesk = false
   if (page.rightbar) {
     page.rightbar.forEach((w, i) => {
       let name = ''
@@ -79,12 +80,13 @@ function layoutWidgets() {
         Object.assign(widget, w)
       }
       if (widget && widget.layout) {
+        if (widget.layout === 'nangua_desk') hasNanguaDesk = true
         el += partial('../widgets/' + widget.layout, {item: widget})
       }
     });
   }
   if (el.trim().length > 0) {
-    return `<div class="widgets">${el}</div>`
+    return `<div class="widgets${hasNanguaDesk ? ' nangua-rightbar' : ''}">${el}</div>`
   } else {
     return ''
   }

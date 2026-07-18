@@ -42,8 +42,9 @@ function layoutDiv() {
     el += ` data-filter="${filter}"`
     el += ` placeholder="${item.placeholder || __('search.search_in', filter)}">`
   } else {
-    el += ` placeholder="${item.placeholder || __('search.search')}">`
+    el += ` placeholder="${item.placeholder || '搜索文章…'}">`
   }
+  el += `<kbd class="search-shortcut" aria-hidden="true">⌘K</kbd>`
   el += `</form>`
   el += `<div id="search-result"></div>`
   el += `<div class="search-no-result">${__('search.no_results')}</div>`

@@ -20,6 +20,65 @@
     },
     toggleTOC: () => {
       document.querySelector('#data-toc').classList.toggle('collapse');
+    },
+    focusMode: () => {
+      const html = document.documentElement;
+      const active = html.getAttribute('data-focus-mode') === 'true';
+      if (active) {
+        html.removeAttribute('data-focus-mode');
+      } else {
+        html.setAttribute('data-focus-mode', 'true');
+      }
+      try {
+        sessionStorage.setItem('Nangua.focusMode', active ? 'false' : 'true');
+      } catch (e) {}
+      sidebar.syncFocusMode();
+    },
+    syncFocusMode: () => {
+      const button = document.querySelector('.focus-mode-toggle');
+      if (!button) return;
+      let active = document.documentElement.getAttribute('data-focus-mode') === 'true';
+      try {
+        active = sessionStorage.getItem('Nangua.focusMode') === 'true';
+      } catch (e) {}
+      if (active) {
+        document.documentElement.setAttribute('data-focus-mode', 'true');
+      } else {
+        document.documentElement.removeAttribute('data-focus-mode');
+      }
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      button.setAttribute('aria-label', active ? '退出沉浸模式' : '进入沉浸模式');
+      button.setAttribute('title', active ? '退出沉浸模式' : '进入沉浸模式');
     }
+  }
+
+  sidebar.syncFocusMode();
+  if (!window.nanguaFocusModePjaxBound) {
+    window.nanguaFocusModePjaxBound = true;
+    document.addEventListener('pjax:complete', () => sidebar.syncFocusMode());
+  }
+
+  if (!window.nanguaSearchShortcutBound) {
+    window.nanguaSearchShortcutBound = true;
+    const shortcut = document.querySelector('.search-shortcut');
+    if (shortcut) {
+      shortcut.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K';
+    }
+    document.addEventListener('keydown', event => {
+      if (!(event.key.toLowerCase() === 'k' && (event.ctrlKey || event.metaKey))) {
+        return;
+      }
+      const target = event.target;
+      const isEditing = target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+      if (isEditing && target.id !== 'search-input') {
+        return;
+      }
+      const input = document.getElementById('search-input');
+      if (input) {
+        event.preventDefault();
+        input.focus();
+        input.select();
+      }
+    });
   }
 </script>

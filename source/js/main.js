@@ -171,6 +171,62 @@ const init = {
       }
     })
   },
+  nanguaDesk: () => {
+    const pad = value => String(value).padStart(2, '0');
+    const positionDesks = () => {
+      document.querySelectorAll('[data-nangua-desk]').forEach(desk => {
+        const rightbar = desk.closest('.l_right');
+        const widgets = desk.parentElement;
+        if (!rightbar || !widgets || !window.matchMedia('(min-width: 1180px)').matches) {
+          desk.classList.remove('nangua-desk-fixed');
+          desk.style.removeProperty('--nangua-desk-left');
+          desk.style.removeProperty('--nangua-desk-width');
+          return;
+        }
+        const rightbarRect = rightbar.getBoundingClientRect();
+        const widgetsStyle = window.getComputedStyle(widgets);
+        const marginLeft = Number.parseFloat(widgetsStyle.marginLeft) || 0;
+        desk.style.setProperty('--nangua-desk-left', `${rightbarRect.left + marginLeft}px`);
+        desk.style.setProperty('--nangua-desk-width', `${rightbarRect.width}px`);
+        desk.classList.add('nangua-desk-fixed');
+      });
+    };
+    document.querySelectorAll('[data-nangua-desk]').forEach(desk => {
+      if (desk._clockTimer) clearInterval(desk._clockTimer);
+      const update = () => {
+        const now = new Date();
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
+        const remaining = target => Math.max(0, target.getTime() - now.getTime());
+        const today = remaining(endOfDay);
+        const month = remaining(endOfMonth);
+        const year = remaining(endOfYear);
+        const set = (selector, value) => {
+          const el = desk.querySelector(selector);
+          if (el) el.textContent = value;
+        };
+        const weekday = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        set('[data-desk-year-label]', `${now.getFullYear()} 年`);
+        set('[data-desk-date]', `${now.getMonth() + 1} 月 ${now.getDate()} 日`);
+        set('[data-desk-weekday]', weekday[now.getDay()]);
+        set('[data-desk-time]', `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`);
+        set('[data-desk-today]', `${pad(Math.floor(today / 3600000))}:${pad(Math.floor(today / 60000) % 60)}:${pad(Math.floor(today / 1000) % 60)}`);
+        set('[data-desk-month]', `${Math.floor(month / 86400000)} 天 ${Math.floor(month / 3600000) % 24} 时`);
+        set('[data-desk-year]', `${Math.floor(year / 86400000)} 天 ${Math.floor(year / 3600000) % 24} 时`);
+      };
+      update();
+      desk._clockTimer = setInterval(update, 1000);
+    });
+    positionDesks();
+    stellar.positionNanguaDesk = positionDesks;
+    if (!window.nanguaDeskResizeBound) {
+      window.nanguaDeskResizeBound = true;
+      window.addEventListener('resize', () => {
+        if (stellar.positionNanguaDesk) stellar.positionNanguaDesk();
+      });
+    }
+  },
   /**
    * Tabs tag listener (without twitter bootstrap).
    */
@@ -298,6 +354,7 @@ stellar.initPage = function () {
   init.toc();
   init.sidebar();
   init.relativeDate(document.querySelectorAll('#post-meta time'));
+  init.nanguaDesk();
   init.registerTabsTag();
   
   // Reinitialize comments after PJAX navigation
