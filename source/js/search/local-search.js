@@ -1,5 +1,6 @@
 var searchCache = null;
-var searchCacheKey = 'search_cache_v1';
+var searchView = document.querySelector('meta[name="blog-view"]')?.content || 'public';
+var searchCacheKey = 'search_cache_v2_' + searchView;
 
 var searchFunc = function(path, filter, wrapperId, searchId, contentId) {
   var $input = document.getElementById(searchId);
